@@ -68,7 +68,13 @@ export async function fetchNotifications({ publishedOnly = false, perPage = null
  * is calculated from the current PocketBase database rather than hard-coded.
  */
 export async function fetchHomepageMetrics() {
-    const response = await window.fetch('/hcgi/platform/api/homepage-metrics', { method: 'GET' });
+    // Use the same configured PocketBase base URL as every other call in this
+    // file (pb.buildURL honours VITE_POCKETBASE_URL). The previous hardcoded
+    // '/hcgi/platform/...' path only resolves inside Hostinger Horizons — on
+    // any other deployment (including local dev, per SETUP_GUIDE) it hit the
+    // SPA's own dev server, got back index.html instead of JSON, and silently
+    // left every "Live Impact Metrics" tile blank.
+    const response = await window.fetch(pb.buildURL('/api/homepage-metrics'), { method: 'GET' });
     if (!response.ok) throw new Error('Homepage metrics unavailable');
     return response.json();
 }

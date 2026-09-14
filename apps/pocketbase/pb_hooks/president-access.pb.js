@@ -307,6 +307,7 @@ routerAdd("GET", "/api/homepage-metrics", (e) => {
     const findings = $app.findRecordsByFilter("findings", publishedContentFilter, "", 100000, 0);
     const research = $app.findRecordsByFilter("research", publishedContentFilter, "", 100000, 0);
     const investigations = $app.findRecordsByFilter("investigations", publishedContentFilter, "", 100000, 0);
+    const totalLogins = $app.findRecordsByFilter("login_events", "", "", 100000, 0).length;
 
     let corruptionAmount = 0;
     findings.forEach((record) => {
@@ -331,6 +332,7 @@ routerAdd("GET", "/api/homepage-metrics", (e) => {
       findings: findings.length,
       investigations: investigations.length,
       replyRate: rtis.length ? Number(((replies / rtis.length) * 100).toFixed(1)) : 0,
+      totalLogins,
     });
   } catch (err) {
     $app.logger().error("homepage metrics failed", "err", String(err));

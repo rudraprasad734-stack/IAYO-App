@@ -52,6 +52,7 @@ function ImpactMetrics({ metrics }) {
     const rtis = displayMetric(metrics?.rtis);
     const districts = displayMetric(metrics?.districts);
     const corruption = metrics ? formatRupees(metrics.corruptionAmount) : '—';
+    const totalLogins = displayMetric(metrics?.totalLogins);
     const num = (v) => {
         const n = parseInt(String(v).replace(/[^\d]/g, ''), 10);
         return Number.isFinite(n) ? n : 0;
@@ -70,7 +71,7 @@ function ImpactMetrics({ metrics }) {
                         <span className="flex h-3 w-3 rounded-full bg-iayo-blue shadow-[0_0_0_6px_rgba(29,78,216,0.25)]" />
                     </div>
 
-                    <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
+                    <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
                         <div>
                             <p className="font-display text-4xl font-extrabold tracking-tight md:text-5xl">
                                 {typeof members === 'number' || /^\d+$/.test(String(members)) ? <CountUp value={num(members)} /> : members}
@@ -92,6 +93,12 @@ function ImpactMetrics({ metrics }) {
                         <div>
                             <p className="font-display text-4xl font-extrabold tracking-tight text-white md:text-5xl">{corruption}</p>
                             <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/50">Corruption Identified</p>
+                        </div>
+                        <div>
+                            <p className="font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+                                {typeof totalLogins === 'number' || /^\d+$/.test(String(totalLogins)) ? <CountUp value={num(totalLogins)} /> : totalLogins}
+                            </p>
+                            <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white/50">Total Logins</p>
                         </div>
                     </div>
 
