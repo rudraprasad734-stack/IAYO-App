@@ -12,6 +12,7 @@ import {
     fetchAllFindingsForStaff, fetchAllRtiForStaff, fetchAllCommentsForStaff,
     fetchAllMembers, fetchStats, fetchNotifications, fetchUsers,
     fetchAuditLogs, logAudit, formatDate, fetchResearchApplications, fetchContributions, fileUrl,
+    protectedFileUrl,
 } from '@/lib/data';
 import pb from '@/lib/pocketbaseClient';
 import { Eyebrow } from '@/components/bits';
@@ -450,6 +451,11 @@ function RecordManager({ config, items, loading, user, onChanged }) {
 
     const openEdit = (item) => {
         setEditing(item);
+        setShowForm(true);
+    };
+
+    const openNew = () => {
+        setEditing(null);
         setShowForm(true);
     };
 
@@ -948,7 +954,27 @@ function ContributionsPanel({ items, loading, onChanged }) {
     const [note, setNote] = useState('');
     const [busy, setBusy] = useState('');
     const [error, setError] = useState('');
+    const [fileUrls, setFileUrls] = useState({});
     const pending = (items || []).filter((item) => item.status === 'pending');
+
+    // contributions.files is a protected field; a short-lived file token is
+    // required to open a file's URL (see protectedFileUrl in lib/data.js).
+    useEffect(() => {
+        let mounted = true;
+        (items || []).forEach((item) => {
+            (item.files || []).forEach((name) => {
+                const key = `${item.id}/${name}`;
+                if (fileUrls[key]) return;
+                protectedFileUrl(item, name).then((url) => {
+                    if (mounted && url) setFileUrls((current) => ({ ...current, [key]: url }));
+                }).catch(() => {});
+            });
+        });
+        return () => { mounted = false; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items]);
+
+    const linkFor = (item, name) => fileUrls[`${item.id}/${name}`] || '';
 
     const decide = async (record, status) => {
         setBusy(record.id);
@@ -995,7 +1021,7 @@ function ContributionsPanel({ items, loading, onChanged }) {
                             </div>
                             <p className="mt-4 max-w-4xl whitespace-pre-wrap text-sm leading-relaxed text-navy/80">{item.description}</p>
                             {item.source_note && <p className="mt-3 text-[12px] text-muted-foreground"><strong>Context:</strong> {item.source_note}</p>}
-                            {Array.isArray(item.files) && item.files.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{item.files.map((name) => <a key={name} href={fileUrl(item, name)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-[11px] font-bold text-iayo-blue hover:bg-iayo-muted"><ExternalLink className="h-3.5 w-3.5" /> {name}</a>)}</div>}
+                            {Array.isArray(item.files) && item.files.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{item.files.map((name) => <a key={name} href={linkFor(item, name)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-[11px] font-bold text-iayo-blue hover:bg-iayo-muted"><ExternalLink className="h-3.5 w-3.5" /> {name}</a>)}</div>}
                         </article>
                     ))}
                 </div>
@@ -1009,7 +1035,7 @@ function ContributionsPanel({ items, loading, onChanged }) {
                             <div><p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">Submission</p><h4 className="mt-1 font-display text-2xl font-extrabold text-navy">{selected.title}</h4><p className="mt-2 text-sm text-muted-foreground">{selected.contribution_type} · {selected.area}</p></div>
                             <div className="border border-border bg-iayo-bg p-4 text-sm leading-relaxed text-navy"><strong>Description:</strong><br />{selected.description}</div>
                             {selected.source_note && <div className="text-sm leading-relaxed text-muted-foreground"><strong>Source/context:</strong> {selected.source_note}</div>}
-                            {Array.isArray(selected.files) && selected.files.length > 0 && <div><p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">Files</p><div className="mt-2 flex flex-wrap gap-2">{selected.files.map((name) => <a key={name} href={fileUrl(selected, name)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-sm bg-iayo-blue px-3 py-2 text-[11px] font-bold text-white"><ExternalLink className="h-3.5 w-3.5" /> Open {name}</a>)}</div></div>}
+                            {Array.isArray(selected.files) && selected.files.length > 0 && <div><p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">Files</p><div className="mt-2 flex flex-wrap gap-2">{selected.files.map((name) => <a key={name} href={linkFor(selected, name)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-sm bg-iayo-blue px-3 py-2 text-[11px] font-bold text-white"><ExternalLink className="h-3.5 w-3.5" /> Open {name}</a>)}</div></div>}
                             {selected.status === 'pending' && <><label className="block"><span className={labelCls}>President note (optional)</span><textarea className={`${inputCls} mt-2 h-28 py-3`} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Reason, verification note or instructions" /></label><div className="flex flex-wrap justify-end gap-3 border-t border-border pt-5"><button type="button" disabled={busy === selected.id} onClick={() => decide(selected, 'rejected')} className="rounded-sm border border-iayo-orange/40 px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-iayo-orange">Reject</button><button type="button" disabled={busy === selected.id} onClick={() => decide(selected, 'approved')} className="rounded-sm bg-iayo-blue px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white">{busy === selected.id ? 'Saving…' : 'Accept Contribution'}</button></div></>}
                         </div>
                     </div>
@@ -1079,7 +1105,6 @@ export default function PresidentDashboard() {
             notifications: fetchNotifications().catch(() => []),
             site_stats: fetchStats().catch(() => []),
             users: fetchUsers().catch(() => []),
-            review_notifications: pb.collection('review_notifications').getFullList({ sort: '-created', filter: "status = 'pending'" }).catch(() => []),
             research_applications: fetchResearchApplications().catch(() => []),
             contributions: fetchContributions().catch(() => []),
             audit: fetchAuditLogs({ perPage: 8 }).then((r) => r.items || []).catch(() => []),
@@ -1105,7 +1130,8 @@ export default function PresidentDashboard() {
         notifications: data.notifications?.length ?? null,
         site_stats: data.site_stats?.length ?? null,
         users: data.users?.length ?? null,
-        review_notifications: data.review_notifications?.length ?? 0,
+        review_notifications: ['research', 'investigations', 'findings', 'rti_cases', 'notifications']
+            .reduce((total, key) => total + (data[key]?.filter((record) => record.status === 'pending_president').length ?? 0), 0),
         research_applications: data.research_applications?.filter((a) => a.status === 'pending').length ?? 0,
         contributions: data.contributions?.filter((c) => c.status === 'pending').length ?? 0,
     };
@@ -1125,7 +1151,7 @@ export default function PresidentDashboard() {
                         </span>
                     </Link>
                     <div className="flex items-center gap-3">
-                        <Link to="/president-review" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-iayo-blue hover:text-navy">Review uploads{data.review_notifications?.length ? <span className="rounded-full bg-iayo-orange px-1.5 py-0.5 text-[10px] text-white">{data.review_notifications.length}</span> : null}</Link>
+                        <Link to="/president-review" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-iayo-blue hover:text-navy">Review uploads{counts.review_notifications ? <span className="rounded-full bg-iayo-orange px-1.5 py-0.5 text-[10px] text-white">{counts.review_notifications}</span> : null}</Link>
                         <button type="button" onClick={() => setTab('research_applications')} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-iayo-blue hover:text-navy">Research applications{counts.research_applications ? <span className="rounded-full bg-iayo-orange px-1.5 py-0.5 text-[10px] text-white">{counts.research_applications}</span> : null}</button>
                         <Link to="/president-admins" className="text-[13px] font-bold text-navy hover:text-iayo-blue">Manage Admins</Link>
                         <Link to="/" className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground hover:text-iayo-blue">

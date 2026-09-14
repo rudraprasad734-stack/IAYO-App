@@ -104,7 +104,7 @@ function MaterialSubmission() {
                 </div>
             </div>
 
-            {status === 'error' && <p className="mt-6 rounded-sm border border-iayo-orange/40 bg-iayo-orange/10 px-4 py-3 text-sm font-semibold text-iayo-orange">{error}</p>}
+            {error && <p className="mt-6 rounded-sm border border-iayo-orange/40 bg-iayo-orange/10 px-4 py-3 text-sm font-semibold text-iayo-orange">{error}</p>}
 
             <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2">
                 <label><span className={labelCls}>Your name *</span><input className={inputCls} value={form.name} onChange={(e) => set('name', e.target.value)} required /></label>
@@ -177,7 +177,7 @@ export default function ResearchContributePage() {
                     ) : (
                         <form onSubmit={submit} className="border border-border bg-white p-6 md:p-8">
                             <div className="flex items-start gap-3 border-b border-border pb-6"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-iayo-blue/10 text-iayo-blue"><FlaskConical className="h-5 w-5" /></span><div><h2 className="font-display text-xl font-extrabold text-navy">Research Contributor Application</h2><p className="mt-1 text-sm text-muted-foreground">Apply to work with IAYO on research, field verification or public-interest investigations.</p></div></div>
-                            {status === 'error' && <p className="mt-6 rounded-sm border border-iayo-orange/40 bg-iayo-orange/10 px-4 py-3 text-sm font-semibold text-iayo-orange">{error}</p>}
+                            {error && <p className="mt-6 rounded-sm border border-iayo-orange/40 bg-iayo-orange/10 px-4 py-3 text-sm font-semibold text-iayo-orange">{error}</p>}
                             <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2">
                                 <label><span className={labelCls}>Full name *</span><input className={inputCls} value={form.name} onChange={(e) => set('name', e.target.value)} required /></label>
                                 <label><span className={labelCls}>Phone number *</span><input className={inputCls} type="tel" value={form.phone} onChange={(e) => set('phone', e.target.value)} required /></label>

@@ -30,6 +30,7 @@ import {
     fetchFindings,
     fetchRti,
     fetchApprovedComments,
+    fetchNotifications,
     formatDate,
     fileUrl,
 } from '@/lib/data';

@@ -14,7 +14,7 @@ export default async (req, res) => {
     try {
         record = await pb
             .collection('members')
-            .getFirstListItem(`membership_code = "${code}"`);
+            .getFirstListItem(pb.filter('membership_code = {:code}', { code }));
     } catch (_) {
         return res.status(404).json({ valid: false });
     }

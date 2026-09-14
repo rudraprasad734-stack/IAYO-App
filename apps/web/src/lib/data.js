@@ -106,6 +106,15 @@ export function fileUrl(record, filename, thumb) {
     return pb.files.getUrl(record, filename, thumb ? { thumb } : undefined);
 }
 
+// contributions.files is a protected field (see 1788861210_protect_contribution_files.js):
+// PocketBase only enforces the collection's viewRule on /api/files/... requests for
+// protected fields, and only when the URL carries a short-lived file token.
+export async function protectedFileUrl(record, filename) {
+    if (!record || !filename) return '';
+    const token = await pb.files.getToken();
+    return pb.files.getUrl(record, filename, { token });
+}
+
 export function formatDate(value) {
     if (!value) return '';
     const d = new Date(value);

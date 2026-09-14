@@ -12,7 +12,7 @@ export default async (req, res) => {
     let record;
     try {
         record = await pb.collection('users').getFirstListItem(
-            `president_id = "${presidentId}"`,
+            pb.filter('president_id = {:presidentId}', { presidentId }),
         );
     } catch (_) {
         return res.status(404).json({ error: 'President not found' });
