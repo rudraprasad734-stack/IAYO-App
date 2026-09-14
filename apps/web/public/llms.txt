@@ -1,0 +1,10 @@
+## Pages
+- [Admin Login — IAYO](/admin-login): Authorised IAYO administrative verification and upload access.
+- [Admin Verification Office — IAYO](/admin): No description available
+- [Citizen Login — IAYO](/citizen-login): Sign in to IAYO with email OTP — passwordless citizen access.
+- [Manage Admins — IAYO](/president-admins): No description available
+- [President Control Panel — IAYO](/dashboard): Super-admin control panel: full CRUD over all IAYO website data, content, members and office bearers.
+- [President Login — IAYO](/president-login): Authorised President login using registered email, password and email OTP.
+- [President Review Queue — IAYO](/president-review): No description available
+- [President Setup — IAYO](/president-setup): No description available
+- [Profile — IAYO](/profile): Your IAYO profile.
