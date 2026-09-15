@@ -483,22 +483,28 @@ function JoinBanner() {
         <section className="edge mt-6">
             <Link
                 to="/join"
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-dashed border-iayo-orange/50 bg-white px-6 py-6 transition-all hover:border-iayo-orange hover:shadow-md md:px-8"
+                className="group relative block overflow-hidden rounded-2xl bg-[#0B1B33] p-1.5 transition-all hover:shadow-xl"
             >
-                <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-iayo-orange">
-                        Citizen Membership
-                    </p>
-                    <h2 className="mt-1 font-display text-xl font-extrabold tracking-tight text-navy md:text-2xl">
-                        Join the Movement
-                    </h2>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        Get your official digital membership certificate instantly
-                    </p>
+                <div className="orb orb-blue pointer-events-none absolute -left-10 -top-16 h-56 w-56 rounded-full bg-iayo-blue/50 blur-3xl" aria-hidden="true" />
+                <div className="orb orb-orange pointer-events-none absolute -bottom-20 right-0 h-64 w-64 rounded-full bg-iayo-orange/40 blur-3xl" aria-hidden="true" />
+                <div className="orb orb-blue-2 pointer-events-none absolute right-1/3 top-0 h-40 w-40 rounded-full bg-sky-400/30 blur-3xl" aria-hidden="true" />
+
+                <div className="relative flex items-center justify-between gap-4 rounded-xl border border-white/15 bg-white/10 px-6 py-6 backdrop-blur-xl md:px-8">
+                    <div>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-iayo-orange">
+                            Citizen Membership
+                        </p>
+                        <h2 className="mt-1 font-display text-xl font-extrabold tracking-tight text-white md:text-2xl">
+                            Join the Movement
+                        </h2>
+                        <p className="mt-1 text-sm text-white/70">
+                            Get your official digital membership certificate instantly
+                        </p>
+                    </div>
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-navy transition-transform group-hover:scale-105">
+                        <ArrowRight className="h-5 w-5" strokeWidth={2.25} />
+                    </span>
                 </div>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy text-white transition-transform group-hover:scale-105">
-                    <ArrowRight className="h-5 w-5" strokeWidth={2.25} />
-                </span>
             </Link>
         </section>
     );
