@@ -1,0 +1,147 @@
+/*
+  IAYO — Indian Allied Youths Party
+  Institutional civic-research platform: deep navy, white, IAYO blue, orange CTA.
+  Flat, high-contrast, editorial. Minimal radius, thin dividers, generous whitespace.
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  overflow-x: clip;
+  background-color: #f7f8fa;
+  color: #0b1b33;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+/* ---break--- */
+
+@layer base {
+  :root {
+    --background: 220 14% 97%;
+    --foreground: 215 64% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 64% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 64% 12%;
+    --primary: 215 64% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 224 76% 48%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 214 33% 95%;
+    --muted-foreground: 215 18% 42%;
+    --accent: 224 76% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 14 76% 53%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 88%;
+    --input: 215 28% 88%;
+    --ring: 224 76% 48%;
+    --radius: 0.25rem;
+    --navy: 215 64% 12%;
+    --blue: 224 76% 48%;
+    --orange: 14 76% 53%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 64% 12%;
+    --sidebar-primary: 224 76% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 33% 95%;
+    --sidebar-accent-foreground: 215 64% 12%;
+    --sidebar-border: 215 28% 88%;
+    --sidebar-ring: 224 76% 48%;
+  }
+  .dark {
+    --background: 215 64% 12%;
+    --foreground: 220 14% 97%;
+    --card: 215 40% 16%;
+    --card-foreground: 220 14% 97%;
+    --popover: 215 40% 16%;
+    --popover-foreground: 220 14% 97%;
+    --primary: 220 14% 97%;
+    --primary-foreground: 215 64% 12%;
+    --secondary: 224 76% 48%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 215 30% 20%;
+    --muted-foreground: 220 12% 65%;
+    --accent: 224 76% 48%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 14 76% 53%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 24%;
+    --input: 215 28% 24%;
+    --ring: 224 76% 48%;
+    --sidebar-background: 215 40% 16%;
+    --sidebar-foreground: 220 14% 97%;
+    --sidebar-primary: 224 76% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 30% 20%;
+    --sidebar-accent-foreground: 220 14% 97%;
+    --sidebar-border: 215 28% 24%;
+    --sidebar-ring: 224 76% 48%;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: "Manrope", "Inter", system-ui, sans-serif;
+  }
+  .tracking-tightest {
+    letter-spacing: -0.04em;
+  }
+  .edge {
+    max-width: 90rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .edge {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.25s ease;
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  .grid-paper {
+    background-image:
+      linear-gradient(to right, rgba(11, 27, 51, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(11, 27, 51, 0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .grid-paper-light {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
