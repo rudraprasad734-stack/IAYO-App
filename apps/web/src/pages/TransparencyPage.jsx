@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileSearch, ArrowRight } from 'lucide-react';
+import { FileSearch, ArrowRight, FileText, Download } from 'lucide-react';
 import Layout from '@/components/Layout';
 import Reveal from '@/components/Reveal';
 import {
@@ -39,9 +39,9 @@ export default function TransparencyPage() {
                             IAYO's transparency cell files RTIs, indexes responses, and publishes compliance
                             scores so citizens can see which authorities answer — and which stay silent.
                         </p>
-                        <Link to="/citizen-login" className={`mt-8 ${btnPrimary}`}>
-                            File an RTI <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
-                        </Link>
+                        <a href="#how-to-file-rti" className={`mt-8 ${btnPrimary}`}>
+                            How to File an RTI <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
+                        </a>
                     </div>
                     <div className="md:col-span-5">
                         <div className="grid grid-cols-2 gap-px border border-border bg-border">
@@ -61,6 +61,68 @@ export default function TransparencyPage() {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="how-to-file-rti" className="border-b border-border bg-white py-14 md:py-20">
+                <div className="edge">
+                    <div className="flex items-center gap-3">
+                        <FileText className="h-6 w-6 text-iayo-blue" strokeWidth={1.75} />
+                        <h2 className="font-display text-2xl font-extrabold tracking-tight text-navy">
+                            How to File an RTI
+                        </h2>
+                    </div>
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+                        Filing an RTI is a citizen's legal right — no lawyer or login required. Download the
+                        step-by-step guide below, or see a worked example of a specific, well-drafted RTI
+                        application.
+                    </p>
+                    <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <a
+                            href="/rti-resources/how-to-file-an-rti-sikkim.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-start gap-4 rounded-2xl border border-border bg-white p-6 transition-all hover:border-iayo-blue hover:shadow-md"
+                        >
+                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-50 text-iayo-blue">
+                                <FileText className="h-5 w-5" strokeWidth={2} />
+                            </span>
+                            <div>
+                                <h3 className="font-display text-lg font-extrabold tracking-tight text-navy">
+                                    How to File an RTI in Sikkim
+                                </h3>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    Full guide: fees, timelines, appeals, and the Sikkim Form &#39;A&#39;
+                                    application template.
+                                </p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-[0.1em] text-iayo-blue">
+                                    Download PDF <Download className="h-3.5 w-3.5" strokeWidth={2.5} />
+                                </span>
+                            </div>
+                        </a>
+                        <a
+                            href="/rti-resources/example-rti-food-godown-yangang.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-start gap-4 rounded-2xl border border-border bg-white p-6 transition-all hover:border-iayo-blue hover:shadow-md"
+                        >
+                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-50 text-iayo-orange">
+                                <FileText className="h-5 w-5" strokeWidth={2} />
+                            </span>
+                            <div>
+                                <h3 className="font-display text-lg font-extrabold tracking-tight text-navy">
+                                    Example: RTI on Undocumented Fee Collection
+                                </h3>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    A worked example RTI application questioning document-printing and
+                                    account-updation fees collected without receipts at a Food Godown.
+                                </p>
+                                <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-[0.1em] text-iayo-orange">
+                                    Download PDF <Download className="h-3.5 w-3.5" strokeWidth={2.5} />
+                                </span>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </section>
