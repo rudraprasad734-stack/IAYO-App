@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Mail, ArrowRight, ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,6 +8,7 @@ import { btnPrimary, btnSecondary, Eyebrow } from '@/components/bits';
 export default function CitizenLoginPage() {
     const { requestOtp, verifyOtp, isAuthed } = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [email, setEmail] = useState('');
     const [otpId, setOtpId] = useState('');
     const [code, setCode] = useState('');
@@ -15,8 +16,13 @@ export default function CitizenLoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    const returnParam = searchParams.get('return');
+    const returnTo = returnParam && returnParam.startsWith('/') && !returnParam.startsWith('//')
+        ? returnParam
+        : '/profile';
+
     if (isAuthed) {
-        navigate('/profile');
+        navigate(returnTo);
     }
 
     const sendOtp = async (e) => {
@@ -40,7 +46,7 @@ export default function CitizenLoginPage() {
         setLoading(true);
         try {
             await verifyOtp(otpId, code.trim());
-            navigate('/profile');
+            navigate(returnTo);
         } catch (err) {
             setError(err?.message || 'Invalid or expired code.');
         } finally {
