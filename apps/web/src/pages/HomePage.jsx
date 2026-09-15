@@ -23,6 +23,7 @@ import Seo from '@/components/Seo';
 import Reveal from '@/components/Reveal';
 import CountUp from '@/components/CountUp';
 import { btnPrimary, btnOrange, Eyebrow, Spinner } from '@/components/bits';
+import { useAuth } from '@/contexts/AuthContext';
 import {
     fetchHomepageMetrics,
     fetchResearch,
@@ -941,7 +942,10 @@ function CitizenAccessBand() {
     );
 }
 
+const LOGIN_PROMPT_SESSION_KEY = 'iayo_login_prompt_shown';
+
 export default function HomePage() {
+    const { isAuthed, openLoginPrompt } = useAuth();
     const [metrics, setMetrics] = useState(null);
     const [research, setResearch] = useState(null);
     const [investigations, setInvestigations] = useState(null);
@@ -965,6 +969,28 @@ export default function HomePage() {
         const timer = window.setInterval(loadHomepage, 30000);
         return () => { mounted = false; window.clearInterval(timer); };
     }, []);
+
+    useEffect(() => {
+        if (isAuthed) return undefined;
+        let alreadyShown = false;
+        try {
+            alreadyShown = window.sessionStorage.getItem(LOGIN_PROMPT_SESSION_KEY) === '1';
+        } catch (_) {
+            alreadyShown = false;
+        }
+        if (alreadyShown) return undefined;
+
+        const timer = window.setTimeout(() => {
+            openLoginPrompt();
+            try {
+                window.sessionStorage.setItem(LOGIN_PROMPT_SESSION_KEY, '1');
+            } catch (_) {
+                // sessionStorage unavailable — popup may reappear on next visit, not harmful
+            }
+        }, 1500);
+        return () => window.clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthed]);
 
     return (
         <Layout

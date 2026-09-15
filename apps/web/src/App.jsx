@@ -32,7 +32,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLoginPage from './pages/AdminLoginPage';
 import PresidentAdminManagementPage from './pages/PresidentAdminManagementPage';
 import PresidentReviewPage from './pages/PresidentReviewPage';
-import PresidentSessionGuard from './components/PresidentSessionGuard';
+import SessionActivityGuard from './components/SessionActivityGuard';
+import LoginChoiceModal from './components/LoginChoiceModal';
 
 function RequireAuth({ children }) {
     const { isAuthed } = useAuth();
@@ -54,7 +55,7 @@ function RequireAdmin({ children }) {
 function RequirePresident({ children }) {
     const { isAuthed, isPresident } = useAuth();
     if (!isAuthed) return <Navigate to="/president-login" replace />;
-    return isPresident ? <PresidentSessionGuard>{children}</PresidentSessionGuard> : <Navigate to="/president-login" replace />;
+    return isPresident ? children : <Navigate to="/president-login" replace />;
 }
 
 function App() {
@@ -62,6 +63,8 @@ function App() {
         <AuthProvider>
             <Router>
                 <ScrollToTop />
+                <SessionActivityGuard />
+                <LoginChoiceModal />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/research" element={<ResearchPage />} />

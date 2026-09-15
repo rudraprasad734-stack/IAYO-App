@@ -6,6 +6,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(pb.authStore.record);
     const [loading, setLoading] = useState(true);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
     useEffect(() => {
         const unsub = pb.authStore.onChange((_token, record) => setUser(record));
@@ -74,8 +75,12 @@ export const AuthProvider = ({ children }) => {
                 }),
 
             logout,
+
+            showLoginPrompt,
+            openLoginPrompt: () => setShowLoginPrompt(true),
+            closeLoginPrompt: () => setShowLoginPrompt(false),
         };
-    }, [user, loading]);
+    }, [user, loading, showLoginPrompt]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
