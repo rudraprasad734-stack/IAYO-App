@@ -1,0 +1,13 @@
+node_modules/
+dist/
+
+# PocketBase runtime data (local database, logs, uploaded files) — never commit.
+apps/pocketbase/pb_data/
+
+# Session journal written by pb_hooks/logs-forwarder.pb.js during local dev.
+vault/temp/
+
+*.log
+.DS_Store
+.env
+.env.*
