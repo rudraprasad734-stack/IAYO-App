@@ -1,0 +1,59 @@
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["apps/web/**", "package.json", "package-lock.json", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the website
+        # Points the built site at the production backend (PocketBase + API).
+        # Update these two once the backend is actually deployed and reachable
+        # at these addresses (see apps/web/.env for the local-dev equivalents).
+        env:
+          VITE_POCKETBASE_URL: https://pb.iayo.in
+          VITE_API_URL: https://api.iayo.in
+        run: npm run build --prefix apps/web
+
+      - name: Add SPA fallback for client-side routing
+        # GitHub Pages has no server-side rewrites, so a direct link or a
+        # refresh on any route other than "/" (e.g. /research, /president-
+        # login) would 404. Serving index.html's content for any unmatched
+        # path lets react-router-dom take over and resolve the route
+        # client-side, exactly as it does for "/".
+        run: cp dist/apps/web/index.html dist/apps/web/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/apps/web
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
