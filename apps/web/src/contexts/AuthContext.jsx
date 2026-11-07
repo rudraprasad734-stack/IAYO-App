@@ -74,6 +74,20 @@ export const AuthProvider = ({ children }) => {
                     method: 'GET',
                 }),
 
+            presidentPasswordResetRequest: (email) =>
+                pb.send('/api/president/password-reset/request', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: String(email).trim().toLowerCase() }),
+                    headers: { 'Content-Type': 'application/json' },
+                }),
+
+            presidentPasswordResetConfirm: (email, code, password) =>
+                pb.send('/api/president/password-reset/confirm', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: String(email).trim().toLowerCase(), code, password }),
+                    headers: { 'Content-Type': 'application/json' },
+                }),
+
             logout,
 
             showLoginPrompt,

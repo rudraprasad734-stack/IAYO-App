@@ -234,7 +234,12 @@ export default function PresidentLoginPage() {
                                 </label>
 
                                 <label className="block">
-                                    <span className={labelCls}>Password</span>
+                                    <div className="flex items-center justify-between">
+                                        <span className={labelCls}>Password</span>
+                                        <Link to="/president-forgot-password" className="text-[11px] font-bold uppercase tracking-[0.08em] text-iayo-blue hover:underline">
+                                            Forgot password?
+                                        </Link>
+                                    </div>
                                     <input
                                         type="password"
                                         required
