@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Mail, ArrowRight, ArrowLeft, Shield } from 'lucide-react';
@@ -21,9 +21,10 @@ export default function CitizenLoginPage() {
         ? returnParam
         : '/profile';
 
-    if (isAuthed) {
-        navigate(returnTo);
-    }
+    useEffect(() => {
+        if (isAuthed) navigate(returnTo, { replace: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthed]);
 
     const sendOtp = async (e) => {
         e.preventDefault();

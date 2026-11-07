@@ -196,7 +196,7 @@ migrate(
       admin.setPassword("IAYO@Admin2026");
       admin.set("name", "IAYO Administrator");
       admin.set("role", "admin");
-      admin.set("president_id", "IAYO-ADMIN-001");
+      admin.set("admin_id", "IAYO-ADMIN-001");
       admin.set("verified", true);
       app.save(admin);
     }
