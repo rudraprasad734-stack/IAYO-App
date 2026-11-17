@@ -921,32 +921,6 @@ function GovernanceCharter() {
     );
 }
 
-function CitizenAccessBand() {
-    return (
-        <section className="edge mt-10">
-            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#064E3B] via-[#0B1B33] to-[#0B1B33] p-8 text-white md:p-10">
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">
-                    General User &amp; Citizen Access · All 28 States &amp; 8 UTs
-                </span>
-                <h2 className="mt-5 max-w-2xl font-display text-3xl font-extrabold tracking-tight md:text-4xl">
-                    Passwordless Citizen Access to Public Governance
-                </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
-                    Log in seamlessly using your registered email address and instant Email OTP verification. Once your
-                    account is created, you never need a password. Submit whistleblower tips, follow state-level RTI
-                    petitions, and receive verified notifications.
-                </p>
-                <Link
-                    to="/citizen-login"
-                    className="mt-7 inline-flex h-12 items-center rounded-full bg-white px-6 text-[13px] font-bold uppercase tracking-[0.08em] text-navy transition-all hover:bg-white/90"
-                >
-                    Citizen Login
-                </Link>
-            </div>
-        </section>
-    );
-}
-
 export default function HomePage() {
     const [metrics, setMetrics] = useState(null);
     const [research, setResearch] = useState(null);
@@ -1004,9 +978,6 @@ export default function HomePage() {
                 </Reveal>
                 <Reveal y={16}>
                     <InstitutionalMetrics metrics={metrics} />
-                </Reveal>
-                <Reveal y={16}>
-                    <CitizenAccessBand />
                 </Reveal>
                 <ResearchRepository research={research} />
                 <FindingsGrid findings={findings} />
