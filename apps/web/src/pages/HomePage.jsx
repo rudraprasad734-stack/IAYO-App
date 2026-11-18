@@ -4,7 +4,6 @@ import {
     ArrowRight,
     Play,
     MapPin,
-    FileText,
     Download,
     ShieldCheck,
     Scale,
@@ -15,6 +14,7 @@ import {
     Plus,
     Eye,
     BookOpen,
+    BarChart3,
     X,
     Bell,
 } from 'lucide-react';
@@ -22,9 +22,10 @@ import Layout from '@/components/Layout';
 import Seo from '@/components/Seo';
 import Reveal from '@/components/Reveal';
 import CountUp from '@/components/CountUp';
-import { btnPrimary, btnOrange, Eyebrow, Spinner } from '@/components/bits';
+import { btnOrange, Eyebrow, Spinner } from '@/components/bits';
 import {
     fetchHomepageMetrics,
+    fetchStats,
     fetchResearch,
     fetchInvestigations,
     fetchFindings,
@@ -111,6 +112,28 @@ function ImpactMetrics({ metrics }) {
                             Audit Logs <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                     </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function SiteStatistics({ stats }) {
+    const items = stats || [];
+    if (!items.length) return null;
+    return (
+        <section className="edge mt-6">
+            <div className="rounded-2xl border border-border bg-white p-5 shadow-sm md:p-6">
+                <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-iayo-blue">
+                    <BarChart3 className="h-3.5 w-3.5" /> President-Maintained Statistics
+                </p>
+                <div className="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
+                    {items.map((item) => (
+                        <div key={item.id}>
+                            <p className="font-display text-2xl font-extrabold tracking-tight text-navy md:text-3xl">{item.value}</p>
+                            <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">{item.label}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
@@ -380,57 +403,6 @@ function GroundAndRti({ investigations, rtis }) {
     );
 }
 
-function PublicationsStrip({ research }) {
-    const items = (research || []).slice(0, 2);
-    return (
-        <section className="edge mt-6">
-            <div className="rounded-2xl border border-border bg-white p-5 md:p-6">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h2 className="font-display text-lg font-extrabold tracking-tight text-navy md:text-xl">
-                        Publications
-                    </h2>
-                    <Link
-                        to="/research"
-                        className="rounded-full border border-iayo-blue/30 bg-iayo-blue/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-iayo-blue"
-                    >
-                        PDF Archive
-                    </Link>
-                </div>
-                <div className="mt-4 space-y-3">
-                    {items.map((item) => (
-                        <div
-                            key={item.id}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-border bg-iayo-bg/80 px-4 py-3"
-                        >
-                            <div className="flex min-w-0 items-center gap-3">
-                                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-iayo-blue shadow-sm">
-                                    <FileText className="h-5 w-5" strokeWidth={1.75} />
-                                </span>
-                                <div className="min-w-0">
-                                    <p className="truncate text-sm font-bold text-navy">{item.title}</p>
-                                    <p className="text-[11px] font-medium text-muted-foreground">
-                                        PDF · Research Report
-                                    </p>
-                                </div>
-                            </div>
-                            <Link
-                                to={`/research/${item.id}`}
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-navy hover:text-iayo-blue"
-                                aria-label="Open publication"
-                            >
-                                <Download className="h-4 w-4" />
-                            </Link>
-                        </div>
-                    ))}
-                    {!items.length && (
-                        <p className="py-4 text-center text-sm text-muted-foreground">No publications yet.</p>
-                    )}
-                </div>
-            </div>
-        </section>
-    );
-}
-
 function FeaturedFinding({ findings }) {
     const item = findings?.[0];
     if (!item) return null;
@@ -472,73 +444,6 @@ function FeaturedFinding({ findings }) {
                     >
                         Inspect Forensic Dossier <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function JoinBanner() {
-    return (
-        <section className="edge mt-6">
-            <Link
-                to="/join"
-                className="group relative block overflow-hidden rounded-2xl bg-[#0B1B33] p-1.5 transition-all hover:shadow-xl"
-            >
-                <div className="orb orb-blue pointer-events-none absolute -left-10 -top-16 h-56 w-56 rounded-full bg-iayo-blue/50 blur-3xl" aria-hidden="true" />
-                <div className="orb orb-orange pointer-events-none absolute -bottom-20 right-0 h-64 w-64 rounded-full bg-iayo-orange/40 blur-3xl" aria-hidden="true" />
-                <div className="orb orb-blue-2 pointer-events-none absolute right-1/3 top-0 h-40 w-40 rounded-full bg-sky-400/30 blur-3xl" aria-hidden="true" />
-
-                <div className="relative flex items-center justify-between gap-4 rounded-xl border border-white/15 bg-white/10 px-6 py-6 backdrop-blur-xl md:px-8">
-                    <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-iayo-orange">
-                            Citizen Membership
-                        </p>
-                        <h2 className="mt-1 font-display text-xl font-extrabold tracking-tight text-white md:text-2xl">
-                            Join the Movement
-                        </h2>
-                        <p className="mt-1 text-sm text-white/70">
-                            Get your official digital membership certificate instantly
-                        </p>
-                    </div>
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-navy transition-transform group-hover:scale-105">
-                        <ArrowRight className="h-5 w-5" strokeWidth={2.25} />
-                    </span>
-                </div>
-            </Link>
-        </section>
-    );
-}
-
-function InstitutionalMetrics({ metrics }) {
-    const cards = [
-        { label: 'RTIs Filed', value: displayMetric(metrics?.rtis), sub: 'Published RTI records', icon: FileText, tint: 'bg-amber-50 text-amber-600' },
-        { label: 'RTI Replies Received', value: displayMetric(metrics?.replies), sub: 'Based on recorded replies', icon: BookOpen, tint: 'bg-emerald-50 text-emerald-600' },
-        { label: 'Research Reports', value: displayMetric(metrics?.reports), sub: 'Published reports', icon: CheckCircle2, tint: 'bg-sky-50 text-sky-600' },
-        { label: 'Documented Findings', value: displayMetric(metrics?.findings), sub: 'Published findings', icon: ShieldCheck, tint: 'bg-rose-50 text-rose-600' },
-        { label: 'Verified Members', value: displayMetric(metrics?.members), sub: 'Value maintained in Homepage Statistics', icon: Scale, tint: 'bg-orange-50 text-orange-600' },
-        { label: 'Districts Reached', value: displayMetric(metrics?.districts), sub: 'Distinct districts in published RTI/findings', icon: MapPin, tint: 'bg-blue-50 text-iayo-blue' },
-    ];
-
-    return (
-        <section className="edge mt-10 md:mt-14">
-            <div className="rounded-2xl border border-border bg-white p-6 md:p-8">
-                <div className="flex flex-wrap items-end justify-between gap-4">
-                    <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-iayo-blue">Live Institutional Metrics</p>
-                        <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight text-navy md:text-3xl">Democratic Accountability by the Numbers</h2>
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-50 px-3 py-1 text-[11px] font-bold text-emerald-700"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Live Database Calculated</span>
-                </div>
-                <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-4">
-                    {cards.map((c) => (
-                        <div key={c.label} className="rounded-2xl border border-border bg-iayo-bg/50 p-4 md:p-5">
-                            <span className={`inline-flex h-9 w-9 items-center justify-center rounded-xl ${c.tint}`}><c.icon className="h-4 w-4" strokeWidth={2} /></span>
-                            <p className="mt-4 font-display text-3xl font-extrabold tracking-tight text-navy md:text-4xl">{c.value}</p>
-                            <p className="mt-1 text-sm font-bold text-navy">{c.label}</p>
-                            <p className="mt-0.5 text-[11px] text-muted-foreground">{c.sub}</p>
-                        </div>
-                    ))}
                 </div>
             </div>
         </section>
@@ -703,28 +608,6 @@ function FindingsGrid({ findings }) {
                         </article>
                     );
                 })}
-            </div>
-        </section>
-    );
-}
-
-function RtiCta() {
-    return (
-        <section className="edge mt-10 md:mt-14">
-            <div className="rounded-2xl border border-border bg-white p-8 shadow-sm md:p-10">
-                <span className="rounded-full border border-iayo-blue/25 bg-iayo-blue/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-iayo-blue">
-                    RTI Act 2005 Transparency Docket
-                </span>
-                <h2 className="mt-5 max-w-3xl font-display text-3xl font-extrabold leading-[1.1] tracking-tight text-navy md:text-4xl">
-                    Public Money Belongs to Citizens. So Do the Records.
-                </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                    Every RTI filed by IAYO youth fellows is published unredacted with its statutory timeline—from
-                    initial application, Public Information Officer verification, statutory replies, to first appeals.
-                </p>
-                <Link to="/rti" className={`${btnPrimary} mt-8 rounded-full`}>
-                    Browse RTI Applications &amp; Replies <ArrowRight className="h-4 w-4" />
-                </Link>
             </div>
         </section>
     );
@@ -923,6 +806,7 @@ function GovernanceCharter() {
 
 export default function HomePage() {
     const [metrics, setMetrics] = useState(null);
+    const [stats, setStats] = useState(null);
     const [research, setResearch] = useState(null);
     const [investigations, setInvestigations] = useState(null);
     const [findings, setFindings] = useState(null);
@@ -934,10 +818,11 @@ export default function HomePage() {
         let mounted = true;
         const loadHomepage = () => {
             fetchHomepageMetrics().then((value) => mounted && setMetrics(value)).catch(() => mounted && setMetrics(null));
+            fetchStats().then((value) => mounted && setStats(value)).catch(() => mounted && setStats([]));
             fetchNotifications({ publishedOnly: true, perPage: 5 }).then((value) => mounted && setNews(value)).catch(() => mounted && setNews([]));
             fetchResearch({ perPage: 4 }).then((r) => mounted && setResearch(r.items)).catch(() => mounted && setResearch([]));
-            fetchInvestigations({ perPage: 4 }).then((r) => mounted && setInvestigations(r.items)).catch(() => mounted && setInvestigations([]));
-            fetchFindings({ perPage: 4 }).then((r) => mounted && setFindings(r.items)).catch(() => mounted && setFindings([]));
+            fetchInvestigations({ perPage: 8 }).then((r) => mounted && setInvestigations(r.items)).catch(() => mounted && setInvestigations([]));
+            fetchFindings({ perPage: 5 }).then((r) => mounted && setFindings(r.items)).catch(() => mounted && setFindings([]));
             fetchRti({ perPage: 6 }).then((r) => mounted && setRtis(r.items)).catch(() => mounted && setRtis([]));
             fetchApprovedComments({ perPage: 8 }).then((r) => mounted && setVoices(r.items)).catch(() => mounted && setVoices([]));
         };
@@ -961,29 +846,22 @@ export default function HomePage() {
                 <Reveal y={16}>
                     <ImpactMetrics metrics={metrics} />
                 </Reveal>
+                <Reveal y={16} delay={0.03}>
+                    <SiteStatistics stats={stats} />
+                </Reveal>
                 <Reveal y={20} delay={0.05}>
                     <CurrentNewsAnnouncements items={news} />
                 </Reveal>
                 <Reveal y={20} delay={0.05}>
-                    <GroundAndRti investigations={investigations} rtis={rtis} />
+                    <GroundAndRti investigations={(investigations || []).slice(0, 4)} rtis={rtis} />
                 </Reveal>
-                <Reveal y={16} delay={0.08}>
-                    <PublicationsStrip research={research} />
-                </Reveal>
+                <VideoInvestigations investigations={(investigations || []).slice(4, 8)} />
                 <Reveal y={16} delay={0.1}>
                     <FeaturedFinding findings={findings} />
                 </Reveal>
-                <Reveal y={12} delay={0.05}>
-                    <JoinBanner />
-                </Reveal>
-                <Reveal y={16}>
-                    <InstitutionalMetrics metrics={metrics} />
-                </Reveal>
+                <FindingsGrid findings={(findings || []).slice(1)} />
                 <ResearchRepository research={research} />
-                <FindingsGrid findings={findings} />
-                <RtiCta />
                 <VoicesCarousel voices={voices} />
-                <VideoInvestigations investigations={investigations} />
                 <GovernanceCharter />
             </div>
         </Layout>
