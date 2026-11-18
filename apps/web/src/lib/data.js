@@ -202,7 +202,7 @@ export function stateCode(state) {
 export function generateMembershipCode(state) {
     const rand = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
     const padded = rand.padEnd(6, '0');
-    return `IAYO-2026-${stateCode(state)}-${padded}`;
+    return `IAYO-${new Date().getFullYear()}-${stateCode(state)}-${padded}`;
 }
 
 export async function submitMembership(payload) {
