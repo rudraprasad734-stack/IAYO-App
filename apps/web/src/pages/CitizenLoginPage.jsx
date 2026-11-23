@@ -4,9 +4,10 @@ import { Helmet } from 'react-helmet';
 import { Mail, ArrowRight, ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { btnPrimary, btnSecondary, Eyebrow } from '@/components/bits';
+import { DEV_AUTO_LOGIN, DEV_TEST_ACCOUNTS } from '@/lib/devAutoLogin';
 
 export default function CitizenLoginPage() {
-    const { requestOtp, verifyOtp, isAuthed } = useAuth();
+    const { requestOtp, verifyOtp, authWithPassword, isAuthed } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [email, setEmail] = useState('');
@@ -25,6 +26,20 @@ export default function CitizenLoginPage() {
         if (isAuthed) navigate(returnTo, { replace: true });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthed]);
+
+    // TEMPORARY dev auto-login — see lib/devAutoLogin.js. Citizens normally
+    // only ever use passwordless OTP; this signs straight into a dedicated
+    // demo citizen account instead, bypassing this page's OTP form entirely.
+    useEffect(() => {
+        if (!DEV_AUTO_LOGIN || isAuthed) return;
+        const { identity, password: pw } = DEV_TEST_ACCOUNTS.citizen;
+        authWithPassword(identity, pw)
+            .then(() => navigate(returnTo, { replace: true }))
+            .catch(() => {
+                // Demo citizen account not present — show the normal OTP form.
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const sendOtp = async (e) => {
         e.preventDefault();

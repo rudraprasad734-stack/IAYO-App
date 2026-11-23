@@ -5,6 +5,7 @@ import { Shield, ArrowRight, ArrowLeft, Crown } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import pb from '@/lib/pocketbaseClient';
 import { btnPrimary, Eyebrow } from '@/components/bits';
+import { DEV_AUTO_LOGIN, DEV_TEST_ACCOUNTS } from '@/lib/devAutoLogin';
 
 const inputCls =
     'mt-2 h-12 w-full rounded-sm border border-white/15 bg-white/5 px-3 text-[15px] font-semibold text-white outline-none placeholder:text-white/30 focus:border-iayo-blue';
@@ -43,6 +44,35 @@ export default function PresidentLoginPage() {
             .then((result) => setExistsCheck(Boolean(result?.exists)))
             .catch(() => setExistsCheck(null));
     }, [isAuthed, isPresident, navigate, presidentExists]);
+
+    // TEMPORARY dev auto-login — see lib/devAutoLogin.js. MFA is real: this
+    // only fills + submits step 1, landing on the OTP step, never bypasses
+    // the emailed code.
+    useEffect(() => {
+        if (!DEV_AUTO_LOGIN || isAuthed) return;
+        (async () => {
+            const { identity, password: pw } = DEV_TEST_ACCOUNTS.president;
+            setEmail(identity);
+            setPassword(pw);
+            try {
+                await authWithPassword(identity, pw);
+                navigate('/dashboard', { replace: true });
+            } catch (err) {
+                const mfa = err?.response?.mfaId;
+                if (!mfa) return; // test account not present — show manual form
+                try {
+                    const result = await requestOtp(identity);
+                    if (!result?.otpId) return;
+                    setMfaId(mfa);
+                    setOtpId(result.otpId);
+                    setStep('otp');
+                } catch (_) {
+                    // leave the manual credentials form showing
+                }
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const alertRealPresident = async (attemptEmail) => {
         try {

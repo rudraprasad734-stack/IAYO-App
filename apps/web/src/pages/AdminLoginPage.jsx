@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import pb from '@/lib/pocketbaseClient';
 import { btnPrimary, Eyebrow } from '@/components/bits';
+import { DEV_AUTO_LOGIN, DEV_TEST_ACCOUNTS } from '@/lib/devAutoLogin';
 
 const inputCls =
     'mt-2 h-12 w-full rounded-sm border border-border bg-white px-3 text-[15px] font-semibold text-navy outline-none placeholder:text-muted-foreground focus:border-iayo-blue';
@@ -21,6 +22,32 @@ export default function AdminLoginPage() {
     useEffect(() => {
         if (isAuthed && isAdmin) navigate('/admin', { replace: true });
     }, [isAuthed, isAdmin, navigate]);
+
+    // TEMPORARY dev auto-login — see lib/devAutoLogin.js.
+    useEffect(() => {
+        if (!DEV_AUTO_LOGIN || isAuthed) return;
+        (async () => {
+            try {
+                const { adminId, password: pw } = DEV_TEST_ACCOUNTS.admin;
+                const resolved = await adminResolve(adminId);
+                const resolvedEmail = String(resolved?.email || '').trim().toLowerCase();
+                if (!resolvedEmail) return;
+                await authWithPassword(resolvedEmail, pw);
+                const record = pb.authStore.record;
+                const role = record?.get?.('role') || record?.role;
+                const enabled = record?.get?.('admin_enabled') ?? record?.admin_enabled;
+                if (role === 'admin' && enabled === true) {
+                    navigate('/admin', { replace: true });
+                } else {
+                    logout();
+                }
+            } catch (_) {
+                // Test account not present (e.g. a real deployment) — fall
+                // through to the normal manual login form.
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const submit = async (event) => {
         event.preventDefault();
