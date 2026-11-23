@@ -154,9 +154,8 @@ export default function AdminLoginPage() {
                         </form>
                     </div>
 
-                    <div className="mt-5 flex justify-between text-[12px] font-semibold text-muted-foreground">
+                    <div className="mt-5 flex justify-end text-[12px] font-semibold text-muted-foreground">
                         <Link to="/president-login" className="hover:text-iayo-blue">President login →</Link>
-                        <Link to="/citizen-login" className="hover:text-iayo-blue">Citizen login →</Link>
                     </div>
                 </div>
             </main>

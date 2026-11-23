@@ -53,7 +53,7 @@ export default function AboutPage() {
                         Join the work in your district.
                     </h2>
                     <div className="flex flex-wrap gap-3">
-                        <Link to="/citizen-login" className={btnPrimary}>
+                        <Link to="/join" className={btnPrimary}>
                             Join IAYO <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
                         </Link>
                         <Link to="/research" className={btnSecondary}>

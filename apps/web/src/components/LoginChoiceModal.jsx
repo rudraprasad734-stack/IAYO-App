@@ -1,15 +1,13 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { X, User, ShieldCheck, Crown, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { X, ShieldCheck, Crown, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginChoiceModal() {
     const { showLoginPrompt, closeLoginPrompt, isAuthed, user, role, logout } = useAuth();
-    const location = useLocation();
 
     if (!showLoginPrompt) return null;
 
-    const returnTo = encodeURIComponent(location.pathname + location.search);
     const name = user?.get?.('name') || user?.name || '';
     const roleLabel = role === 'president' ? 'President' : role === 'admin' ? 'Admin' : 'Member';
 
@@ -57,13 +55,6 @@ export default function LoginChoiceModal() {
                             Continue as
                         </h2>
                         <div className="mt-5 space-y-2.5">
-                            <Link
-                                to={`/citizen-login?return=${returnTo}`}
-                                onClick={closeLoginPrompt}
-                                className="flex items-center gap-3 rounded-sm border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.06em] text-navy transition-colors hover:border-iayo-blue hover:bg-iayo-muted"
-                            >
-                                <User className="h-4 w-4 text-iayo-blue" /> Login as Member
-                            </Link>
                             <Link
                                 to="/admin-login"
                                 onClick={closeLoginPrompt}

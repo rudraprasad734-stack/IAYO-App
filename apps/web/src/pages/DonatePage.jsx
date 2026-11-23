@@ -26,9 +26,9 @@ export default function DonatePage() {
                             court.
                         </p>
                         <div className="mt-8 flex flex-wrap gap-3">
-                            <Link to="/citizen-login" className={btnOrange}>
+                            <a href="mailto:contact@iayo.in" className={btnOrange}>
                                 <Heart className="h-4 w-4" strokeWidth={2.5} /> Donate
-                            </Link>
+                            </a>
                             <Link to="/" className={btnSecondary}>
                                 Back Home
                             </Link>

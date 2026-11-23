@@ -11,8 +11,6 @@ import {
     Heart,
     BadgeCheck,
     LogOut,
-    Smartphone,
-    User,
     Shield,
     Megaphone,
     ArrowRight,
@@ -157,14 +155,6 @@ function Header() {
                         </Link>
                         <span className="mx-0.5 select-none text-[#d0d7e0]">|</span>
                         <Link
-                            to={isAuthed && !isStaff ? '/profile' : '/citizen-login'}
-                            className="inline-flex items-center gap-1.5 rounded-full border border-[#34c38f] bg-white px-3.5 py-[5px] text-[#0d9f6e] transition-colors hover:bg-[#ecfdf5]"
-                        >
-                            <Smartphone className="h-3.5 w-3.5" strokeWidth={2} />
-                            {isAuthed && !isStaff ? 'Profile' : 'Citizen Login'}
-                        </Link>
-                        <span className="mx-0.5 select-none text-[#d0d7e0]">|</span>
-                        <Link
                             to={isAuthed && isStaff ? '/dashboard' : '/president-login'}
                             className="inline-flex items-center gap-1.5 rounded-full bg-[#0b2a6b] px-3.5 py-[5px] text-white transition-colors hover:bg-[#0a2460]"
                         >
@@ -228,14 +218,8 @@ function Header() {
                             </span>}
                         </Link>
 
-                        {/* Direct login options: Member / President / Admin */}
+                        {/* Direct login options: President / Admin */}
                         <div className="hidden items-center gap-1.5 lg:flex">
-                            <Link
-                                to={isAuthed && !isStaff ? '/profile' : '/citizen-login'}
-                                className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 text-[11px] font-bold uppercase tracking-[0.08em] text-emerald-300 transition-colors hover:bg-emerald-500/20"
-                            >
-                                <User className="h-3.5 w-3.5" /> Member
-                            </Link>
                             <Link
                                 to={isAuthed && isStaff ? '/dashboard' : '/president-login'}
                                 className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-amber-400/40 bg-amber-500/10 px-3 text-[11px] font-bold uppercase tracking-[0.08em] text-amber-300 transition-colors hover:bg-amber-500/20"
@@ -310,14 +294,7 @@ function Header() {
                                 Verify ID
                             </Link>
                         </div>
-                        <div className="mb-4 grid grid-cols-3 gap-2 lg:hidden">
-                            <Link
-                                to={isAuthed && !isStaff ? '/profile' : '/citizen-login'}
-                                onClick={() => setOpen(false)}
-                                className="flex h-11 items-center justify-center gap-1.5 rounded-lg border border-emerald-400/50 bg-emerald-50 text-[11px] font-bold uppercase tracking-[0.06em] text-emerald-700"
-                            >
-                                <User className="h-3.5 w-3.5" /> Member
-                            </Link>
+                        <div className="mb-4 grid grid-cols-2 gap-2 lg:hidden">
                             <Link
                                 to={isAuthed && isStaff ? '/dashboard' : '/president-login'}
                                 onClick={() => setOpen(false)}
@@ -350,19 +327,6 @@ function Header() {
                             ))}
                         </nav>
                         <div className="mt-4 space-y-2 lg:hidden">
-                            <Link
-                                to="/citizen-login"
-                                onClick={() => setOpen(false)}
-                                className="flex h-12 items-center justify-between rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 px-4 text-[13px] font-bold text-white"
-                            >
-                                <span className="inline-flex items-center gap-2">
-                                    <Smartphone className="h-4 w-4" />
-                                    Citizen Login (Mobile OTP)
-                                </span>
-                                <span className="rounded-md bg-white/20 px-2 py-0.5 text-[10px] font-semibold">
-                                    All 36 States &amp; UTs
-                                </span>
-                            </Link>
                             <Link
                                 to="/president-login"
                                 onClick={() => setOpen(false)}

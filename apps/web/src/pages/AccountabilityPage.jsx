@@ -38,7 +38,7 @@ export default function AccountabilityPage() {
                             files formal complaints where mandates are not met. Every finding is sourced and
                             publishable.
                         </p>
-                        <Link to="/citizen-login" className={`mt-8 ${btnPrimary}`}>
+                        <Link to="/join" className={`mt-8 ${btnPrimary}`}>
                             Get Involved <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
                         </Link>
                     </div>

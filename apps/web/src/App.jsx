@@ -23,11 +23,9 @@ import VoicesPage from './pages/VoicesPage';
 import JoinPage from './pages/JoinPage';
 import MembershipSuccessPage from './pages/MembershipSuccessPage';
 import VerifyPage from './pages/VerifyPage';
-import CitizenLoginPage from './pages/CitizenLoginPage';
 import PresidentLoginPage from './pages/PresidentLoginPage';
 import PresidentForgotPasswordPage from './pages/PresidentForgotPasswordPage';
 import PresidentSetupPage from './pages/PresidentSetupPage';
-import ProfilePage from './pages/ProfilePage';
 import PresidentDashboard from './pages/PresidentDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLoginPage from './pages/AdminLoginPage';
@@ -35,17 +33,6 @@ import PresidentAdminManagementPage from './pages/PresidentAdminManagementPage';
 import PresidentReviewPage from './pages/PresidentReviewPage';
 import SessionActivityGuard from './components/SessionActivityGuard';
 import LoginChoiceModal from './components/LoginChoiceModal';
-
-function RequireAuth({ children }) {
-    const { isAuthed } = useAuth();
-    return isAuthed ? children : <Navigate to="/citizen-login" replace />;
-}
-
-function RequireStaff({ children }) {
-    const { isAuthed, isStaff } = useAuth();
-    if (!isAuthed) return <Navigate to="/president-login" replace />;
-    return isStaff ? children : <Navigate to="/profile" replace />;
-}
 
 function RequireAdmin({ children }) {
     const { isAuthed, isAdmin, isAdminEnabled } = useAuth();
@@ -88,11 +75,9 @@ function App() {
                     <Route path="/donate" element={<DonatePage />} />
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/notifications" element={<NotificationsPage />} />
-                    <Route path="/citizen-login" element={<CitizenLoginPage />} />
                     <Route path="/president-login" element={<PresidentLoginPage />} />
                     <Route path="/president-forgot-password" element={<PresidentForgotPasswordPage />} />
                     <Route path="/president-setup" element={<PresidentSetupPage />} />
-                    <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
                     <Route path="/dashboard" element={<RequirePresident><PresidentDashboard /></RequirePresident>} />
                     <Route path="/admin-login" element={<AdminLoginPage />} />
                     <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
